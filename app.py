@@ -7,13 +7,20 @@ import tensorflow as tf
 import gdown
 
 # Function to download the model from Google Drive
-file_id = '1y_epR8Az7lEzsbjJa0HELNFCmauBvsVU'  # Replace with your file ID
-url = f'https://drive.google.com/uc?id={file_id}'
-output = 'model.h5'
-gdown.download(url, output, quiet=False)
+@st.cache_data(show_spinner = "Getting Things Ready................")
+def download_and_load_model():
+    try:
+        file_id = '1y_epR8Az7lEzsbjJa0HELNFCmauBvsVU'  # Replace with your file ID
+        url = f'https://drive.google.com/uc?id={file_id}'
+        output = 'model.h5'
+        gdown.download(url, output, quiet=False)
 
-# Load the model from the file
-SoilNet = tf.keras.models.load_model('model.h5')
+        # Load the model from the file
+        SoilNet = tf.keras.models.load_model('model.h5')
+        return SoilNet
+    except Exception as e:
+        return None
+SoilNet = download_and_load_model()
 st.markdown(
         """
         <style>
@@ -156,7 +163,7 @@ html_content = {
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <style>
-            body { margin: 0; padding: 0; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-image: url('https://m.media-amazon.com/images/I/61A+ysVsqgL._AC_UF1000,1000_QL80_.jpg'); }
+            body { margin: 0; padding: 0; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-image: url('https://m.media-amazon.com/images/I/61A+ysVsqgL.AC_UF1000,1000_QL80.jpg'); }
             #wrapper { max-width: 1200px; width: 90%; text-align: center; background-image: url('https://cdn.pixabay.com/photo/2023/02/01/21/40/pink-7761356_640.png'); background-repeat: no-repeat; background-size: cover; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); padding: 20px; }
             header h1 { font-size: 2em; margin-bottom: 20px; color: #333; }
             header p { font-size: 1.2em; color: #555; }
