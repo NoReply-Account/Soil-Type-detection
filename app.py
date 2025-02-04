@@ -2,10 +2,18 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import numpy as np
 import streamlit as st
+import os
+import tensorflow as tf
+import gdown
 
-# Load the trained model
-model_path = "model.h5"
-SoilNet = load_model(model_path)
+# Function to download the model from Google Drive
+file_id = '1y_epR8Az7lEzsbjJa0HELNFCmauBvsVU'  # Replace with your file ID
+url = f'https://drive.google.com/uc?id={file_id}'
+output = 'model.h5'
+gdown.download(url, output, quiet=False)
+
+# Load the model from the file
+SoilNet = tf.keras.models.load_model('model.h5')
 st.markdown(
         """
         <style>
